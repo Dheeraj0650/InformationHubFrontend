@@ -1,12 +1,14 @@
 import React from 'react';
 import Logo from './Logo';
 import {useSelector, useDispatch} from 'react-redux';
+import { authActions } from '../store/index';
 
 function Navbar(){
-  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const username = useSelector(state => state.auth.username);
   const dispatch = useDispatch();
   let logoutHandler = () => {
-    dispatch({type:'logout'});
+    dispatch(authActions.logout());
   }
 
   return (<nav class="navbar navbar-expand-lg navbar-light" style={{backgroundColor:"white"}}>
@@ -30,7 +32,7 @@ function Navbar(){
                    <button type="button" className="nav-button dropdown-toggle"><i class="fas fa-user" style={{paddingRight:"1rem"}}></i></button>
                 </a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">User</a>
+                  <a class="dropdown-item" href="#">{username}</a>
                   <a class="dropdown-item" href="#">Another action</a>
                   <a class="dropdown-item" href="#" onClick={logoutHandler}>logout</a>
                 </div>

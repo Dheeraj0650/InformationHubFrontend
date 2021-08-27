@@ -8,16 +8,21 @@ import {BrowserRouter as Router ,Switch ,Route} from 'react-router-dom';
 import InfoMain from './InfoMain';
 import Cookies from 'js-cookie';
 import {useSelector, useDispatch} from 'react-redux';
+import { authActions } from '../store/index';
 
 function App(){
   // const [isLoggedIn,setIsLoggedIn] = useState(false);
-  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const dispatch = useDispatch();
 
   useEffect(() => {
         let state = Cookies.get('information-hub-cookie');
         if(state){
-          dispatch({type:'login'});
+          var stateParse = JSON.parse(state);
+          if(stateParse.isLoggedIn){
+            let username = state.username;
+            dispatch(authActions.login(username));  
+          }
         }
     }, []);
 

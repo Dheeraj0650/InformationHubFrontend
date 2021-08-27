@@ -14,6 +14,7 @@ import Cookies from 'js-cookie';
 import socialMediaAuth from '../config/auth';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {googleProvider,githubProvider,microsoftProvider} from '../config/authMethods';
+import { authActions } from '../store/index';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -200,7 +201,12 @@ export default function FullWidthTabs(props) {
         p.then(function(value) {
              setCircularProgress("static");
              if(value === "Successful"){
-                 dispatch({type:'login'});
+                 if(details.username){
+                   dispatch(authActions.login(details.username));
+                 }
+                 else{
+                   dispatch(authActions.login(details.email));
+                 }
              }
              else{
                  if(method === 'login'){
@@ -209,7 +215,7 @@ export default function FullWidthTabs(props) {
                  else{
                    changeAlert_2([true,value]);
                  }
-                 dispatch({type:'logout'});
+                 dispatch(authActions.logout());
              }
          });
     })
