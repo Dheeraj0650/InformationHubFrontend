@@ -10,7 +10,7 @@ html {
   padding-top: 2rem;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 800px) {
 
   .nav-button {
     background-color: white;
@@ -69,7 +69,7 @@ html {
 
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   .nav-button {
     background-color: white;
     border-radius: 2rem;
@@ -132,7 +132,7 @@ html {
 
 
 .information-part {
-  margin-top: 4rem;
+  margin-top: 1.4rem;
 }
 
 .info {
@@ -156,7 +156,7 @@ html {
 }
 
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 800px) {
   #bcc78b6a-42d3-482d-a166-e03269f3a1e1 {
     width: 550px;
   }
@@ -257,7 +257,7 @@ html {
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   .alert {
     width: 20rem;
   }

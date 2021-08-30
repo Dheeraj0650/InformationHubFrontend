@@ -5,7 +5,7 @@ import Info from './Info';
 import Tab from './Login';
 import Contact from './Contact';
 import {BrowserRouter as Router ,Switch ,Route} from 'react-router-dom';
-import InfoMain from './InfoMain';
+import InfoMain from './InfoContainer/InfoContainer';
 import Cookies from 'js-cookie';
 import {useSelector, useDispatch} from 'react-redux';
 import { authActions } from '../store/index';
@@ -20,8 +20,8 @@ function App(){
         if(state){
           var stateParse = JSON.parse(state);
           if(stateParse.isLoggedIn){
-            let username = state.username;
-            dispatch(authActions.login(username));  
+            let username = stateParse.username;
+            dispatch(authActions.login(username));
           }
         }
     }, []);
@@ -44,11 +44,11 @@ function App(){
     <Router>
         <Switch>
             <div className="" style={{position:"absolute",left:"0",right:"0"}}>
-                  <div class="navbar-container">
+                  <div class="navbar-container" style={{paddingTop:"0px"}}>
                       <Navbar />
                   </div>
 
-                  <div class="container-fluid information-part">
+                  <div class="information-part">
                       <Route path = "/" exact>
                            {!isLoggedIn && <Intro />}
                            {isLoggedIn && <InfoMain />}
