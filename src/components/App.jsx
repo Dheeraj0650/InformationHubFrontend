@@ -49,7 +49,7 @@ function App(){
                   </div>
 
                   <div class="information-part">
-                      <Route path = "/" exact>
+                      <Route path = "/" >
                            {!isLoggedIn && <Intro />}
                            {isLoggedIn && <InfoMain />}
                        </Route>

@@ -58,3 +58,10 @@
   border-color: white;
   color: #FEF7DC;
 }
+
+.weatherDataForm{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+}
