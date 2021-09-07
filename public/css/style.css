@@ -210,7 +210,7 @@ html {
 
   .box-4 {
     border-radius: 1rem;
-    background: no-repeat url('https://free4kwallpapers.com/uploads/originals/2019/04/19/nice-weather-amp-river-views-wallpaper.jpg');
+    background: no-repeat url('/weather.jpg');
     background-size: cover;
     box-shadow: 13px 13px 8px #bfafb2;
     font-family: 'Libre Barcode 128 Text', cursive;

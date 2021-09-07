@@ -12,7 +12,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-body {
+.wrapper {
   font-family: "Montserrat-Regular";
   color: #fff;
   font-size: 15px;

@@ -4,17 +4,24 @@ import Intro from './Intro';
 import Info from './Info';
 import Tab from './Login';
 import Contact from './Contact';
-import {BrowserRouter as Router ,Switch ,Route} from 'react-router-dom';
-import InfoMain from './InfoContainer/InfoContainer';
+import {BrowserRouter as Router, Switch , Route, Redirect, NavLink} from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {useSelector, useDispatch} from 'react-redux';
 import { authActions } from '../store/index';
+import 'simplebar/dist/simplebar.min.css';
+import SidebarMenuComponent from './InfoContainer/SidebarMenuComponent';
+import languages from './InfoContainer/languages';
+import Results from './InfoContainer/weather/Results';
+import './InfoContainer/InfoContainer.css';
+import SimpleBar from 'simplebar-react';
+import {sidebarMenuArray, method_1} from './InfoContainer/InfoData';
+import WeatherCard from './InfoContainer/weather/WeatherCards';
+import WeatherData from './InfoContainer/weather/WeatherData';
 
 function App(){
-  // const [isLoggedIn,setIsLoggedIn] = useState(false);
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const dispatch = useDispatch();
-
+  var redirect = false;
   useEffect(() => {
         let state = Cookies.get('information-hub-cookie');
         if(state){
@@ -25,7 +32,6 @@ function App(){
           }
         }
     }, []);
-
 
 
   // const loginHandler = (value) => {
@@ -39,20 +45,41 @@ function App(){
   //     Cookies.remove('information-hub-cookie');
   //     setIsLoggedIn(false);
   // };
-
   return (
     <Router>
         <Switch>
             <div className="" style={{position:"absolute",left:"0",right:"0"}}>
                   <div class="navbar-container" style={{paddingTop:"0px"}}>
-                      <Navbar />
+                      <Route path = "/">
+                          <Navbar />
+                      </Route>
                   </div>
 
                   <div class="information-part">
-                      <Route path = "/" >
+                      <Route path = "/">
                            {!isLoggedIn && <Intro />}
-                           {isLoggedIn && <InfoMain />}
-                       </Route>
+                           {isLoggedIn &&
+                               <div class="main-row">
+                                   <div class="menu-row">
+                                       <SimpleBar style={{height:"40rem"}}>
+                                           {sidebarMenuArray.map((info) => (<NavLink style={{textDecoration: "none"}} to = {`./${info.name}`}><SidebarMenuComponent name={info.name} info={info.description} /></NavLink>))}
+                                       </SimpleBar>
+                                   </div>
+                                   <div class="container info-container">
+                                     <Route path = "/Weather" exact>
+                                         {isLoggedIn?<WeatherCard />:<Redirect to="/" />}
+                                     </Route>
+                                     <Route path = "/method_1" exact>
+                                         {isLoggedIn?<WeatherData info="Get complete weather data at particular location using location coordinates" heading="Location Coordinates" details={method_1} api="Weather"/>:<Redirect to="/" />}
+                                     </Route>
+                                     <Route path = "/results" exact>
+                                         {isLoggedIn?<Results />:<Redirect to="/" />}
+                                     </Route>
+                                   </div>
+                               </div>}
+                      </Route>
+
+                      }
                   </div>
 
                   <div class="container-fluid">
@@ -69,13 +96,17 @@ function App(){
                   </div>
 
                   <div class="" id = "bottom-section">
-                       <Contact />
+                      <Route path = "/" exact>
+                           <Contact />
+                      </Route>
                   </div>
+                  <Route path='*'>
+                      <Redirect to = "/"/>
+                  </Route>
            </div>
         </Switch>
     </Router>
-         );
-
+  );
 }
 
 export default App;

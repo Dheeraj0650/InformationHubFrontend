@@ -8,8 +8,6 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {useDispatch} from 'react-redux';
-import GoogleLogin from 'react-google-login';
-import GitHubLogin from 'react-login-github';
 import Cookies from 'js-cookie';
 import socialMediaAuth from '../config/auth';
 import CircularProgress from '@material-ui/core/CircularProgress';

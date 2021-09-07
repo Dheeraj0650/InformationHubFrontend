@@ -12,7 +12,7 @@ function Navbar(){
   }
 
   return (<nav class="navbar navbar-expand-lg navbar-light" style={{backgroundColor:"white"}}>
-        <a class="navbar-brand" href="#" style={{fontFamily: "'Pacifico', cursive",fontSize:"2.2rem"}}><Logo /><span style={{color:"#6a197d"}}>Information Hub</span></a>
+        <a class="navbar-brand" style={{fontFamily: "'Pacifico', cursive",fontSize:"2rem"}}><Logo /><span style={{color:"#6a197d"}}>Information Hub</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -20,7 +20,7 @@ function Navbar(){
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto" style={{textAlign:"center"}}>
             <li class="nav-item active">
-              <a class="nav-link" href="#"><button type="button" className="nav-button">About</button> <span class="sr-only">(current)</span></a>
+              <a class="nav-link" ><button type="button" className="nav-button">About</button> <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#bottom-section" ><button type="button" className="nav-button">Contact</button></a>
@@ -32,9 +32,9 @@ function Navbar(){
                    <button type="button" className="nav-button dropdown-toggle"><i class="fas fa-user" style={{paddingRight:"1rem"}}></i></button>
                 </a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">{username}</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#" onClick={logoutHandler}>logout</a>
+                  <a class="dropdown-item">{username}</a>
+                  <a class="dropdown-item" >Another action</a>
+                  <a class="dropdown-item" onClick={logoutHandler}>logout</a>
                 </div>
               </div>
               }
