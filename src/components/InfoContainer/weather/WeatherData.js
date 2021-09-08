@@ -8,7 +8,7 @@ import {useHistory, NavLink} from 'react-router-dom';
 export default function Weather(props){
   const history = useHistory();
   const getDetails = (details,method) => {
-    fetch('http://localhost:9000/' + method,{
+    fetch('https://information-hub-backend.herokuapp.com/' + method,{
       method: 'POST',
       body: details,
       headers: {
