@@ -39,8 +39,8 @@
     color: #000;
     position: absolute;
     right: -5px;
-    top: 20px;
-    opacity: 0.1;
+    top: 0px;
+    opacity: 1;
 }
 
 .l-bg-cyan {
@@ -69,4 +69,17 @@
   align-items: center;
   align-content: center;
   justify-content:space-around;
+}
+
+.results_1{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  justify-content:space-around;
+  margin-bottom: 5rem;
+  border-style:none none outset none;
+  border-color: #E6DDC6;
+  border-width:thick;
+  background-repeat: no-repeat;
 }

@@ -20,7 +20,6 @@ export default function Weather(props){
         history.push('/results',{ details: data});
     })
     .catch(err => {
-    	console.error(err);
     });
   }
   let clickHandler = (event) => {
@@ -36,14 +35,7 @@ export default function Weather(props){
       idx++;
     }
     formBody = formBody.join("&");
-    console.log(formBody);
     getDetails(formBody,props.api);
-    // console.log(event.target);
-    // console.log(event.target.latitude.value);
-    // console.log(event.target.longitude.value);
-    // console.log(event.target.exclude.value);
-    // console.log(event.target.units.value);
-    // console.log(event.target.language.value);
   }
   return (
     <div class="wrapper" >

@@ -78,8 +78,6 @@ function App(){
                                    </div>
                                </div>}
                       </Route>
-
-                      }
                   </div>
 
                   <div class="container-fluid">
@@ -96,7 +94,7 @@ function App(){
                   </div>
 
                   <div class="" id = "bottom-section">
-                      <Route path = "/" exact>
+                      <Route path = "/">
                            <Contact />
                       </Route>
                   </div>
