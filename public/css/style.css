@@ -133,6 +133,7 @@ html {
 
 .information-part {
   margin-top: 1.4rem;
+  min-height:40rem;
 }
 
 .info {
@@ -148,7 +149,7 @@ html {
 }
 
 .middle-container {
-  padding-top: 10rem;
+  padding-top: 3rem;
 }
 
 .welcome-text {

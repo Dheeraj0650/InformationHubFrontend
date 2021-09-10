@@ -25,18 +25,42 @@
     background-color: #FDFAF6;
 }
 
-@media only screen and (min-width: 800px) {
-  .menu-row{
-    background-color: #11052C;
-    width: 15.5rem;
-  }
+/* @media only screen and (min-width: 800px) {
+
 }
 @media only screen and (max-width: 800px) {
   .menu-row{
     background-color: #11052C;
     width: 0rem;
-    height:0rem;
   }
+} */
+.menu-row{
+  background-color: #11052C;
+  width: 0rem;
+  position: absolute;
+  z-index: 1;
+}
+
+.toggleDropdown{
+  position: absolute;
+  outline: none;
+  z-index: 1;
+  height: 40rem;
+}
+
+
+.toggle{
+  width: 15rem;
+}
+
+.toggleButton{
+  left:15rem;
+  outline: none;
+}
+
+.btn:focus {
+  outline: none !important;
+  box-shadow: none;
 }
 
 .card_1{

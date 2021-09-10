@@ -1,13 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import '../InfoContainer.css';
 import Dropdown from '../Dropdown';
 import InputField from '../InputField';
 import {useHistory, NavLink} from 'react-router-dom';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default function Weather(props){
   const history = useHistory();
+  const [circularProgress,setCircularProgress] = useState("static");
   const getDetails = (details,method) => {
+    setCircularProgress("indeterminate");
     fetch('https://information-hub-backend.herokuapp.com/' + method,{
       method: 'POST',
       body: details,
@@ -17,9 +19,11 @@ export default function Weather(props){
     })
     .then(function(resp) { return resp.json() }) // Convert data to json
     .then(function(data) {
+        setCircularProgress("static");
         history.push('/results',{ details: data});
     })
     .catch(err => {
+        setCircularProgress("static");
     });
   }
   let clickHandler = (event) => {
@@ -38,17 +42,20 @@ export default function Weather(props){
     getDetails(formBody,props.api);
   }
   return (
-    <div class="wrapper" >
-  			<div class="inner">
-  				<form onSubmit={clickHandler}>
-  					<h3 class="heading">{props.heading}</h3>
-  					<p>{props.info}</p>
-            {props.details.map((info) => (info.type === "InputField"?<InputField name={info.name} description={info.description}/>:<Dropdown name={info.name} description={info.description} content={info.content}/>))}
-  					<button class="form-button" type="submit" value = "submit">Submit
-  						<i class="zmdi zmdi-arrow-right"></i>
-  					</button>
-  				</form>
-  		 </div>
+    <div class="container results-card">
+      <div class="wrapper" >
+    			<div class="inner">
+    				<form onSubmit={clickHandler}>
+    					<h3 class="heading">{props.heading}</h3>
+    					<p>{props.info}</p>
+              {props.details.map((info) => (info.type === "InputField"?<InputField name={info.name} description={info.description}/>:<Dropdown name={info.name} description={info.description} content={info.content}/>))}
+              {circularProgress==="indeterminate"? <CircularProgress class="loader" color="default" variant={circularProgress}/>:
+              <button class="form-button" type="submit" value = "submit">Submit
+    						<i class="zmdi zmdi-arrow-right"></i>
+    					</button>}
+    				</form>
+    		 </div>
+      </div>
     </div>
   );
 }

@@ -17,6 +17,8 @@ import SimpleBar from 'simplebar-react';
 import {sidebarMenuArray, method_1} from './InfoContainer/InfoData';
 import WeatherCard from './InfoContainer/weather/WeatherCards';
 import WeatherData from './InfoContainer/weather/WeatherData';
+import toggleDropdown from './toggleDropdown';
+import Select from './Select'
 
 function App(){
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
@@ -60,12 +62,16 @@ function App(){
                            {!isLoggedIn && <Intro />}
                            {isLoggedIn &&
                                <div class="main-row">
-                                   <div class="menu-row">
+                                   <div class="menu-row" id="menu-row">
                                        <SimpleBar style={{height:"40rem"}}>
-                                           {sidebarMenuArray.map((info) => (<NavLink style={{textDecoration: "none"}} to = {`./${info.name}`}><SidebarMenuComponent name={info.name} info={info.description} /></NavLink>))}
+                                           {sidebarMenuArray.map((info) => (<NavLink style={{textDecoration: "none"}} to = {`./${info.name}`}><SidebarMenuComponent name={info.name} info={info.description} onClick={toggleDropdown}/></NavLink>))}
                                        </SimpleBar>
                                    </div>
+                                   <button type="button" class="btn btn-outline-primary toggleDropdown" id="toggleDropdown" onClick={toggleDropdown} ><i class="fas fa-chevron-circle-right"></i></button>
                                    <div class="container info-container">
+                                     <Route path = "/" exact>
+                                         {isLoggedIn?<Select />:<Redirect to="/" />}
+                                     </Route>
                                      <Route path = "/Weather" exact>
                                          {isLoggedIn?<WeatherCard />:<Redirect to="/" />}
                                      </Route>
@@ -81,14 +87,14 @@ function App(){
                   </div>
 
                   <div class="container-fluid">
-                      <Route path = "/" exact>
+                      <Route path = "/">
                           {!isLoggedIn && <Info />}
                       </Route>
                   </div>
 
                   {!isLoggedIn && <h2 style={{fontFamily: "'Alata', sans-serif",textAlign:"center",fontSize:"3rem",paddingTop:"2rem"}}>Many More ...</h2>}
                   <div className="container-fluid" id = "login" style = {{marginTop:"7rem",display: "flex",justifyContent: "center",alignItems: "center"}}>
-                      <Route path = "/" exact>
+                      <Route path = "/">
                           {!isLoggedIn && <Tab />}
                       </Route>
                   </div>

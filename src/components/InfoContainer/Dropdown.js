@@ -16,18 +16,20 @@ export default function(props){
     setState(name);
   };
   return (
-    <FormControl variant="filled" style={{width:"32rem"}}>
-      <InputLabel htmlFor="filled-age-native-simple" style={{color:"#00ade6"}}>{props.name}</InputLabel>
-      <Select
-        native
-        value={state}
-        onChange={handleChange}
-        name={props.name}
-      >
-        <option aria-label="None" value="" />
-        {content_arr.map((info) => (<option value={info[0]}>{info[1]}</option>))}
-      </Select>
-      <span style={{margin:"8px 0 8px 0",fontSize:"0.8rem"}}>{props.description}</span>
-    </FormControl>
+    <div class="container">
+      <FormControl variant="filled" >
+        <InputLabel htmlFor="filled-age-native-simple" style={{color:"#00ade6"}}>{props.name}</InputLabel>
+        <Select
+          native
+          value={state}
+          onChange={handleChange}
+          name={props.name}
+        >
+          <option aria-label="None" value="" />
+          {content_arr.map((info) => (<option value={info[0]}>{info[1]}</option>))}
+        </Select>
+        <span style={{margin:"8px 0 8px 0",fontSize:"0.8rem"}}>{props.description}</span>
+      </FormControl>
+    </div>
   );
 }

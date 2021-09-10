@@ -109,6 +109,67 @@ textarea.form-control {
   padding-bottom: 10px;
  }
 
+ .loader{
+     border: none;
+     width: 162px;
+     height: 51px;
+     margin: auto;
+     margin-top: 60px;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     padding: 0;
+     background: none;
+     color: #fff;
+     text-transform: uppercase;
+     font-family: "Montserrat-SemiBold";
+     -webkit-transform: perspective(1px) translateZ(0);
+     transform: perspective(1px) translateZ(0);
+     position: relative;
+     -webkit-transition-property: color;
+     transition-property: color;
+     -webkit-transition-duration: 0.3s;
+     transition-duration: 0.3s; }
+     .form-button i {
+       margin-left: 10px;
+       -webkit-transform: translateZ(0);
+       transform: translateZ(0);
+       -webkit-transition-duration: 0.1s;
+       transition-duration: 0.1s;
+       -webkit-transition-property: transform;
+       transition-property: transform;
+       -webkit-transition-timing-function: ease-out;
+       transition-timing-function: ease-out; }
+     .form-button:before {
+       content: "";
+       position: absolute;
+       z-index: -1;
+       top: 0;
+       left: 0;
+       right: 0;
+       bottom: 0;
+       background: #2098D1;
+       -webkit-transform: scaleX(0);
+       transform: scaleX(0);
+       -webkit-transform-origin: 0 50%;
+       transform-origin: 0 50%;
+       -webkit-transition-property: transform;
+       transition-property: transform;
+       -webkit-transition-duration: 0.3s;
+       transition-duration: 0.3s;
+       -webkit-transition-timing-function: ease-out;
+       transition-timing-function: ease-out; }
+     .form-button:hover {
+       border-color: transparent; }
+       .form-button:hover:before {
+         -webkit-transform: scaleX(1);
+         transform: scaleX(1); }
+       .form-button:hover i {
+         -webkit-transform: translateX(4px);
+         transform: translateX(4px); }
+
+
 .form-button {
   border: none;
   width: 162px;
