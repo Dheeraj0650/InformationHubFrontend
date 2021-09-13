@@ -41,7 +41,7 @@ export default function Weather(props){
   const [circularProgress,setCircularProgress] = useState("static");
   const getDetails = (details,method) => {
     setCircularProgress("indeterminate");
-    fetch('http://localhost:9000/' + method,{
+    fetch('https://information-hub-backend.herokuapp.com/' + method,{
       method: 'POST',
       body: details,
       headers: {
