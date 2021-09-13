@@ -7,6 +7,7 @@ export default function(props){
         <input name = {props.name} type="text" class="form-control"  required/>
         <span>{props.name}</span>
         <span class="border"></span>
+        <span style={{marginTop:"2.3rem",fontSize:"0.8rem",color:"white"}}>{props.description}</span>
       </label>
     </div>
   );

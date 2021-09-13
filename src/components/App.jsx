@@ -14,11 +14,13 @@ import languages from './InfoContainer/languages';
 import Results from './InfoContainer/weather/Results';
 import './InfoContainer/InfoContainer.css';
 import SimpleBar from 'simplebar-react';
-import {sidebarMenuArray, method_1} from './InfoContainer/InfoData';
+import {sidebarMenuArray, method_1, method_2, method_3} from './InfoContainer/InfoData';
 import WeatherCard from './InfoContainer/weather/WeatherCards';
 import WeatherData from './InfoContainer/weather/WeatherData';
 import toggleDropdown from './toggleDropdown';
 import Select from './Select'
+import WeatherByCityName from './InfoContainer/weather/WeatherByCityName';
+import AirPollution from './InfoContainer/weather/AirPollution';
 
 function App(){
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
@@ -77,6 +79,12 @@ function App(){
                                      </Route>
                                      <Route path = "/method_1" exact>
                                          {isLoggedIn?<WeatherData info="Get complete weather data at particular location using location coordinates" heading="Location Coordinates" details={method_1} api="Weather"/>:<Redirect to="/" />}
+                                     </Route>
+                                     <Route path = "/method_2" exact>
+                                         {isLoggedIn?<WeatherByCityName info="Get complete weather data at particular location using City Name" heading="City Name" details={method_2} api="WeatherByCityName"/>:<Redirect to="/" />}
+                                     </Route>
+                                     <Route path = "/method_3" exact>
+                                         {isLoggedIn?<AirPollution info="Get air pollution data for any coordinates on the globe" heading="City Name" details={method_3} api="air_pollution"/>:<Redirect to="/" />}
                                      </Route>
                                      <Route path = "/results" exact>
                                          {isLoggedIn?<Results />:<Redirect to="/" />}

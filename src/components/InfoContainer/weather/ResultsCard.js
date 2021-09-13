@@ -8,7 +8,7 @@ export default function(props){
         {props.heading}
         <div style={{fontFamily: "'Raleway', sans-serif",fontSize:"15px"}} >{props.headingInfo?props.headingInfo:''}</div>
       </div>
-      <div class="col-6" style={{fontFamily: "'Rubik', sans-serif",fontSize:"16px"}}>
+      <div class="col-6" style={{fontFamily: "'Rubik', sans-serif",fontSize:"16px",textAlign: "center"}}>
         {props.value}
       </div>
     </div>

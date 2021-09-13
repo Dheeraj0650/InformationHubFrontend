@@ -20,7 +20,7 @@ export default function Weather(props){
     .then(function(resp) { return resp.json() }) // Convert data to json
     .then(function(data) {
         setCircularProgress("static");
-        history.push('/results',{ details: data});
+        history.push('/results',{ details: data,method:"Weather"});
     })
     .catch(err => {
         setCircularProgress("static");
