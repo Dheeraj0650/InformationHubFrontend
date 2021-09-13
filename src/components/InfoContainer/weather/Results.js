@@ -64,6 +64,14 @@ export default function(){
     timeKeys = Object.keys(currentTime);
   }
 
+  if(method === "Geocoding"){
+    if(Array.isArray(details)){
+      currentTime = details;
+    }
+    else{
+      currentTime = [details];
+    }
+  }
 
   const handleChange = (event) => {
     setTimeOption(event.target.value);
@@ -133,7 +141,7 @@ export default function(){
                         </div>
                       }
                       {timeOption === "daily" &&
-                          <AwesomeSlider bullets = {false} style={{zIndex:"0"}}>
+                          <AwesomeSlider bullets = {true} organicArrows = {currentTime.length > 1?true:false} style={{zIndex:"0"}}>
                                   {dailyTime.map((info) => {
                                       var dailyKeys = Object.keys(info);
                                       var weatherIcon = info.weather?`http://openweathermap.org/img/wn/${info.weather[0].icon}@2x.png`:'';
@@ -167,7 +175,7 @@ export default function(){
                           </AwesomeSlider>
                       }
                       {timeOption === "minutely" &&
-                      <AwesomeSlider bullets = {false} style={{zIndex:"0"}}>
+                      <AwesomeSlider bullets = {true} organicArrows = {currentTime.length > 1?true:false} style={{zIndex:"0"}}>
                               {minuteTime.map((info) => {
                                   var minuteKeys = Object.keys(info);
                                   var weatherIcon = info.weather?`http://openweathermap.org/img/wn/${info.weather[0].icon}@2x.png`:'';
@@ -201,7 +209,7 @@ export default function(){
                       </AwesomeSlider>
                       }
                       {timeOption === "hourly" &&
-                          <AwesomeSlider bullets = {false} style={{zIndex:"0"}}>
+                          <AwesomeSlider bullets = {true} organicArrows = {currentTime.length > 1?true:false} style={{zIndex:"0"}}>
                                   {hourTime.map((info) => {
                                       var hourKeys = Object.keys(info);
                                       var weatherIcon = info.weather?`http://openweathermap.org/img/wn/${info.weather[0].icon}@2x.png`:'';
@@ -298,7 +306,7 @@ export default function(){
                   </div>
               }
               {method === "WeatherByCityNameList" &&
-              <AwesomeSlider bullets = {false} style={{zIndex:"0"}}>
+              <AwesomeSlider bullets = {true} organicArrows = {currentTime.length > 1?true:false} style={{zIndex:"0"}}>
                           {currentTime.list.map((timeKeys_1) => {
                                 let timeKeys = Object.keys(timeKeys_1);
                                 var weatherIcon = timeKeys_1.weather?`http://openweathermap.org/img/wn/${timeKeys_1.weather[0].icon}@2x.png`:'';
@@ -355,7 +363,7 @@ export default function(){
                 </AwesomeSlider>
               }
               {method === "AirPollution" &&
-              <AwesomeSlider bullets = {false} style={{zIndex:"0",height:"70rem"}}>
+              <AwesomeSlider bullets = {true} organicArrows = {currentTime.length > 1?true:false} style={{zIndex:"0",height:"70rem"}}>
                           {currentTime.list.map((timeKeys_1) => {
                                 let timeKeys = Object.keys(timeKeys_1);
                                 var weatherIcon = timeKeys_1.weather?`http://openweathermap.org/img/wn/${timeKeys_1.weather[0].icon}@2x.png`:'';
@@ -410,6 +418,63 @@ export default function(){
                               }
                             )}
                 </AwesomeSlider>
+              }
+              {method === "Geocoding" &&
+                <AwesomeSlider bullets = {true} organicArrows = {currentTime.length > 1?true:false} style={{zIndex:"0",height:"80rem"}}>
+                        {currentTime.map((timeKeys_1) => {
+                              let timeKeys = Object.keys(timeKeys_1);
+                              var weatherIcon = timeKeys_1.weather?`http://openweathermap.org/img/wn/${timeKeys_1.weather[0].icon}@2x.png`:'';
+                              var weather = timeKeys_1.weather?timeKeys_1.weather[0].description:'';
+                              return (
+                                <div class="container results-container">
+                                    <div class="wrapper results-card" style={{marginLeft:'0px',marginRight:'0px'}}>
+                                            <div class="inner" style={{width:"70rem",paddingLeft:"0px",paddingRight:"0px"}}>
+                                                <h3 class="heading">Geocoding</h3>
+                                                <p>{timeKeys_1.name}</p>
+                                                <div class="container" >
+                                                  {timeKeys.map((key,index) => {
+                                                      if(typeof timeKeys_1[key] === "number" || typeof timeKeys_1[key] === "string"){
+                                                        let value = timeKeys_1[key];
+                                                        let headingInfo = undefined;
+                                                        if(['dt','sunrise','sunset','moonrise','moonset'].includes(key)){
+                                                            value = date(value);
+                                                        }
+                                                        if(key in weatherInfo){
+                                                          headingInfo = weatherInfo[key];
+                                                        }
+                                                        if(!(['type','cod','id'].includes(key))){
+                                                          return <ResultsCard class = "card l-bg-green-dark" heading = {key} value = {value} weatherIcon = {weatherIcon} headingInfo = {headingInfo} weather={weather}/>
+                                                        }
+                                                      }
+                                                      else if(typeof timeKeys_1[key] === "object" && key != "weather" && timeKeys_1[key] != null){
+                                                        let currentTimeKeys = Object.keys(timeKeys_1[key]);
+                                                        return (
+                                                          <React.Fragment>
+                                                            {currentTimeKeys.map((key_1,index_1) => {
+                                                              let value = timeKeys_1[key][key_1];
+                                                              let headingInfo = undefined;
+                                                              if(['dt','sunrise','sunset','moonrise','moonset'].includes(key_1)){
+                                                                  value = date(value);
+                                                              }
+                                                              if(key_1 in weatherInfo){
+                                                                headingInfo = weatherInfo[key_1];
+                                                              }
+                                                              if(!(['type','cod','id'].includes(key_1))){
+                                                                return <ResultsCard class = "card l-bg-green-dark" heading = {key_1} value = {value} weatherIcon = {weatherIcon} headingInfo = {headingInfo} weather={weather}/>
+                                                              }
+                                                            })}
+                                                          </React.Fragment>
+                                                        )
+                                                      }
+                                                  })}
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                )
+                            }
+                          )}
+                  </AwesomeSlider>
               }
       </React.Fragment>
   );

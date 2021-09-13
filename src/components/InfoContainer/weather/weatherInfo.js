@@ -52,7 +52,13 @@ const info = {
                 so2:'Сoncentration of SO2 (Sulphur dioxide), μg/m3',
                 pm2_5:'Сoncentration of PM2.5 (Fine particles matter), μg/m3',
                 pm10:'Сoncentration of PM10 (Coarse particulate matter), μg/m3',
-                nh3:'Сoncentration of NH3 (Ammonia), μg/m3'
+                nh3:'Сoncentration of NH3 (Ammonia), μg/m3',
+                name:"Name of the found location",
+                lat:"Geographical coordinates of the found location (latitude)",
+                lon:"Geographical coordinates of the found location (longitude)",
+                country:"Country of the found location",
+                state:"(where available) State of the found location",
+                zip:"Specified zip/post code in the API request"
               }
 
 export default info;

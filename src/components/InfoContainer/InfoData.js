@@ -227,4 +227,23 @@ var method_3 = [
   ]
 ]
 
-export {sidebarMenuArray, method_1, method_2,method_3};
+var method_4 = [
+  [
+    {
+      type:'InputField',
+      name:'q'
+    },
+    {
+      type:'InputField',
+      name:'limit'
+    }
+  ],
+  [
+    {
+      type:'InputField',
+      name:'zip'
+    },
+  ]
+]
+
+export {sidebarMenuArray, method_1, method_2,method_3,method_4};

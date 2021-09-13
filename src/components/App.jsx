@@ -14,13 +14,14 @@ import languages from './InfoContainer/languages';
 import Results from './InfoContainer/weather/Results';
 import './InfoContainer/InfoContainer.css';
 import SimpleBar from 'simplebar-react';
-import {sidebarMenuArray, method_1, method_2, method_3} from './InfoContainer/InfoData';
+import {sidebarMenuArray, method_1, method_2, method_3, method_4} from './InfoContainer/InfoData';
 import WeatherCard from './InfoContainer/weather/WeatherCards';
 import WeatherData from './InfoContainer/weather/WeatherData';
 import toggleDropdown from './toggleDropdown';
 import Select from './Select'
 import WeatherByCityName from './InfoContainer/weather/WeatherByCityName';
 import AirPollution from './InfoContainer/weather/AirPollution';
+import Geocoding from './InfoContainer/weather/Geocoding';
 
 function App(){
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
@@ -85,6 +86,9 @@ function App(){
                                      </Route>
                                      <Route path = "/method_3" exact>
                                          {isLoggedIn?<AirPollution info="Get air pollution data for any coordinates on the globe" heading="City Name" details={method_3} api="air_pollution"/>:<Redirect to="/" />}
+                                     </Route>
+                                     <Route path = "/method_4" exact>
+                                         {isLoggedIn?<Geocoding info="Search for locations while working with geographic names and coordinates" details={method_4} api="geocoding"/>:<Redirect to="/" />}
                                      </Route>
                                      <Route path = "/results" exact>
                                          {isLoggedIn?<Results />:<Redirect to="/" />}
