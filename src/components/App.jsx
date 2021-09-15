@@ -14,7 +14,7 @@ import languages from './InfoContainer/languages';
 import Results from './InfoContainer/weather/Results';
 import './InfoContainer/InfoContainer.css';
 import SimpleBar from 'simplebar-react';
-import {sidebarMenuArray, method_1, method_2, method_3, method_4} from './InfoContainer/InfoData';
+import {sidebarMenuArray, method_1, method_2, method_3, method_4, movies} from './InfoContainer/InfoData';
 import WeatherCard from './InfoContainer/weather/WeatherCards';
 import WeatherData from './InfoContainer/weather/WeatherData';
 import toggleDropdown from './toggleDropdown';
@@ -22,6 +22,8 @@ import Select from './Select'
 import WeatherByCityName from './InfoContainer/weather/WeatherByCityName';
 import AirPollution from './InfoContainer/weather/AirPollution';
 import Geocoding from './InfoContainer/weather/Geocoding';
+import MovieCards from './InfoContainer/movies/MovieCards';
+import MovieData from './InfoContainer/movies/MovieData';
 
 function App(){
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
@@ -92,6 +94,9 @@ function App(){
                                      </Route>
                                      <Route path = "/results" exact>
                                          {isLoggedIn?<Results />:<Redirect to="/" />}
+                                     </Route>
+                                     <Route path = "/Movies" exact>
+                                         {isLoggedIn?<MovieData api="movies" details={movies}/>:<Redirect to="/" />}
                                      </Route>
                                    </div>
                                </div>}
