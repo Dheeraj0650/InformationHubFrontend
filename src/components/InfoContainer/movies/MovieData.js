@@ -25,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Weather(props){
   const classes = useStyles();
   const [data,setData] = useState([]);
+  const [isSorted,setSorted] = useState(false);
+  const [searchResults,setSearchResults] = useState(false);
   const [method,setMethod] = useState('');
   const [open, setOpen] = React.useState(false);
 
@@ -32,14 +34,14 @@ export default function Weather(props){
     if(event.target.value === "trending" || event.target.value === ""){
       getDetails([],props.api + "/Trending");
     }
-    else{
-      setMethod(event.target.value);
+    else if(event.target.value === "search"){
+      setSearchResults(false);
     }
+    setMethod(event.target.value);
   };
   const handleClose = () => {
       setOpen(false);
   };
-
   const handleOpen = () => {
       setOpen(true);
   };
@@ -56,9 +58,16 @@ export default function Weather(props){
     })
     .then(function(resp) { return resp.json() }) // Convert data to json
     .then(function(data) {
+        if(method === "movies/Trending"){
+          setData(data.results);
+          setMethod('trending');
+        }
+        else{
+          setData(data.results);
+          setMethod('');
+          setSearchResults(true);
+        }
         setCircularProgress("static");
-        setData(data.results);
-        setMethod('searchResults')
     })
     .catch(err => {
         setCircularProgress("static");
@@ -80,11 +89,23 @@ export default function Weather(props){
     formBody = formBody.join("&");
     getDetails(formBody,props.api + "/Search");
   }
+
   useEffect(function(){
     getDetails([],props.api + "/Trending");
   },[]);
 
-  let reverseTheOrder = () => {
+  let ascending = () => {
+    sortBy('name');
+    setData(JSON.parse(JSON.stringify(data)));
+  }
+
+  let descending = () => {
+    sortBy('name');
+    data.reverse();
+    setData(JSON.parse(JSON.stringify(data)));
+  }
+
+  let reverseOrder = () => {
     data.reverse();
     setData(JSON.parse(JSON.stringify(data)));
   }
@@ -124,10 +145,11 @@ export default function Weather(props){
         }
         return 0;
       }
+
     });
+    setSorted(true);
     setData(JSON.parse(JSON.stringify(data)));
   }
-
   return (
     <div class="container-fluid h-100" >
       <div class="container" style={{textAlign:"center"}}>
@@ -137,6 +159,7 @@ export default function Weather(props){
               labelId="demo-controlled-open-select-label"
               id="demo-controlled-open-select"
               open={open}
+              value={method}
               onClose={handleClose}
               onOpen={handleOpen}
               onChange={handleChange}
@@ -154,16 +177,18 @@ export default function Weather(props){
               <span class="dropdown-item" onClick = {() => sortBy('release_date')}>Sort by year</span>
               <span class="dropdown-item" onClick = {() => sortBy('vote_average')}>Sort by rating</span>
               <div class="dropdown-divider"></div>
-              <span class="dropdown-item" onClick={reverseTheOrder}>Reverse The Order</span>
+              <span class="dropdown-item" onClick={ascending}>Ascending</span>
+              <span class="dropdown-item" onClick={descending}>Descending</span>
+              <span class="dropdown-item" onClick={reverseOrder}>Reverse the order</span>
             </div>
           </div>
       </div>
-      {(method === "" || method ==="trending") &&
+      {((method === "" || method ==="trending") && !searchResults) &&
         <div class="row align-middle">
             {data.map((info) => (<MovieCards details={info}/>))}
         </div>
       }
-      {(method ==="search") &&
+      {(method ==="search" && !searchResults) &&
         <div class="container results-card">
           <div class="wrapper" >
               <div class="inner">
@@ -180,7 +205,7 @@ export default function Weather(props){
           </div>
         </div>
       }
-      {(method === "searchResults") &&
+      {(searchResults) &&
         <div class="row align-middle">
             {data.map((info) => (<MovieCards details={info} />))}
         </div>
