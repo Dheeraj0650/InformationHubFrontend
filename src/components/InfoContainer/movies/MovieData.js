@@ -10,6 +10,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
+import 'simplebar/dist/simplebar.min.css';
+import SimpleBar from 'simplebar-react';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -29,10 +31,14 @@ export default function Weather(props){
   const [searchResults,setSearchResults] = useState(false);
   const [method,setMethod] = useState('');
   const [open, setOpen] = React.useState(false);
+  const [pageNo,setPageNo] = useState(1);
+  const [totalPageNo,setTotalPageNo] = useState(0);
+  const [prevDetails,setPrevDetails] = useState('');
+  const [prevMethod,setPrevMethod] = useState('');
 
   const handleChange = (event) => {
     if(event.target.value === "trending" || event.target.value === ""){
-      getDetails([],props.api + "/Trending");
+      getDetails('page=' + pageNo, props.api + "/Trending");
     }
     else if(event.target.value === "search"){
       setSearchResults(false);
@@ -59,13 +65,16 @@ export default function Weather(props){
     .then(function(resp) { return resp.json() }) // Convert data to json
     .then(function(data) {
         if(method === "movies/Trending"){
+          setTotalPageNo(data.total_pages);
           setData(data.results);
           setMethod('trending');
+          setPrevMethod('trending');
         }
         else{
           setData(data.results);
           setMethod('');
           setSearchResults(true);
+          setPrevMethod('search');
         }
         setCircularProgress("static");
     })
@@ -87,12 +96,28 @@ export default function Weather(props){
       idx++;
     }
     formBody = formBody.join("&");
+    formBody = formBody + '&page=' + pageNo; 
+    setPrevDetails(formBody);
+    setPrevMethod('search');
     getDetails(formBody,props.api + "/Search");
   }
 
   useEffect(function(){
-    getDetails([],props.api + "/Trending");
+    getDetails('',props.api + "/Trending");
   },[]);
+
+  useEffect(function(){
+    if(prevMethod === 'trending' || prevMethod === ''){
+      getDetails('page=' + pageNo, props.api + "/Trending");
+    }
+    else if(prevMethod === 'search'){
+      getDetails(prevDetails + '&page=' + pageNo, props.api + "/Search");
+    }
+  },[pageNo]);
+
+  let handlePageChange = (page) => {
+    setPageNo(page);
+  }
 
   let ascending = () => {
     sortBy('name');
@@ -150,9 +175,29 @@ export default function Weather(props){
     setSorted(true);
     setData(JSON.parse(JSON.stringify(data)));
   }
+
+  const pageArr = Array.from({length: totalPageNo}, (_, index) => index + 1);
+
   return (
     <div class="container-fluid h-100" >
       <div class="container" style={{textAlign:"center"}}>
+          <div class="dropdown show" style={{display:"inline"}}>
+            <button class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{marginTop:"1rem"}}>
+              {pageNo}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <SimpleBar style={{height:"20rem"}}>
+              {pageArr.map((info) => {
+                return (
+                  <React.Fragment>
+                    <span class="dropdown-item" onClick = {() => handlePageChange(info)}>{info}</span>
+                    <div class="dropdown-divider"></div>
+                  </React.Fragment>
+                )
+              })}
+            </SimpleBar>
+            </div>
+          </div>
           <FormControl variant="filled" className={classes.formControl} style={{minWidth: 250,marginBottom:"2rem"}} >
             <InputLabel id="demo-controlled-open-select-label" style = {{fontSize:"1.1rem",color:"#6a197d",zIndex:"-1"}}>Options</InputLabel>
             <Select

@@ -1,5 +1,3 @@
-
-
 export default function sidebarMenuComponent(props){
   return (
     <div class="menu-data container" onClick={props.onClick}>

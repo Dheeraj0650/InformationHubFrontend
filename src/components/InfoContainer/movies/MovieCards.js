@@ -11,7 +11,7 @@ export default function(props){
         </div>
         <a href="#" style={{fontSize:"1rem"}}>more</a>
         <div class="ico-card">
-          <i class="fab fa-empire"></i>
+          <i class="fas fa-film"></i>
         </div>
       </div>
     </div>
