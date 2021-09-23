@@ -141,7 +141,7 @@ export default function(){
                         </div>
                       }
                       {timeOption === "daily" &&
-                          <AwesomeSlider bullets = {true} organicArrows = {currentTime.length > 1?true:false} style={{zIndex:"0"}}>
+                          <AwesomeSlider bullets = {true} organicArrows = {dailyTime.length > 1?true:false} style={{zIndex:"0"}}>
                                   {dailyTime.map((info) => {
                                       var dailyKeys = Object.keys(info);
                                       var weatherIcon = info.weather?`http://openweathermap.org/img/wn/${info.weather[0].icon}@2x.png`:'';
@@ -175,7 +175,7 @@ export default function(){
                           </AwesomeSlider>
                       }
                       {timeOption === "minutely" &&
-                      <AwesomeSlider bullets = {true} organicArrows = {currentTime.length > 1?true:false} style={{zIndex:"0"}}>
+                      <AwesomeSlider bullets = {true} organicArrows = {minuteTime.length > 1?true:false} style={{zIndex:"0"}}>
                               {minuteTime.map((info) => {
                                   var minuteKeys = Object.keys(info);
                                   var weatherIcon = info.weather?`http://openweathermap.org/img/wn/${info.weather[0].icon}@2x.png`:'';
@@ -209,7 +209,7 @@ export default function(){
                       </AwesomeSlider>
                       }
                       {timeOption === "hourly" &&
-                          <AwesomeSlider bullets = {true} organicArrows = {currentTime.length > 1?true:false} style={{zIndex:"0"}}>
+                          <AwesomeSlider bullets = {true} organicArrows = {hourTime.length > 1?true:false} style={{zIndex:"0"}}>
                                   {hourTime.map((info) => {
                                       var hourKeys = Object.keys(info);
                                       var weatherIcon = info.weather?`http://openweathermap.org/img/wn/${info.weather[0].icon}@2x.png`:'';

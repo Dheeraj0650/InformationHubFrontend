@@ -265,4 +265,19 @@ var movies = [
     }
 ]
 
-export {sidebarMenuArray, method_1, method_2,method_3,method_4,movies};
+var people = [
+    {
+      type:'InputField',
+      name:'name'
+    },
+    {
+      type:'InputField',
+      name:'region'
+    },
+    {
+      type:'InputField',
+      name:'language'
+    }
+]
+
+export {sidebarMenuArray, method_1, method_2,method_3,method_4,movies,people};

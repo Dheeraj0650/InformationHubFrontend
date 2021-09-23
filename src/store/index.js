@@ -6,6 +6,14 @@ const initialAuthState = {
   username:''
 };
 
+const peopleMovieResultsState = {
+  details: '',
+};
+
+const movieResultsState = {
+  details: '',
+};
+
 const authSlice = createSlice({
   name: 'authentication',
   initialState: initialAuthState,
@@ -27,10 +35,32 @@ const authSlice = createSlice({
   },
 });
 
-const store = configureStore({
-  reducer: { auth: authSlice.reducer },
+const peopleMovieResultsSlice = createSlice({
+  name: 'movie',
+  initialState: peopleMovieResultsState,
+  reducers: {
+    setMovieResults(state,action) {
+      state.details = action.payload;
+    }
+  },
 });
 
-export const authActions = authSlice.actions;
+const movieResultsSlice = createSlice({
+  name: 'movie_result',
+  initialState: movieResultsState,
+  reducers: {
+    setMovieResults(state,action) {
+      state.details = action.payload;
+    }
+  },
+});
 
+const store = configureStore({
+  reducer: { auth: authSlice.reducer, movie: peopleMovieResultsSlice.reducer, movieResult: movieResultsSlice.reducer},
+});
+
+const authActions = authSlice.actions;
+const peopleMovieResult = peopleMovieResultsSlice.actions;
+const movieResult = movieResultsSlice.actions;
+export {authActions, movieResult, peopleMovieResult};
 export default store;

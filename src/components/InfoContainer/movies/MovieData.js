@@ -2,9 +2,11 @@ import React, {useState, useEffect} from "react";
 import '../InfoContainer.css';
 import Dropdown from '../Dropdown';
 import InputField from '../InputField';
-import {useHistory, NavLink} from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MovieCards from './MovieCards';
+import PeopleCards from './PeopleCards';
+import ResultsCard from './ResultsCard';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -12,6 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import 'simplebar/dist/simplebar.min.css';
 import SimpleBar from 'simplebar-react';
+import { peopleMovieResult, movieResult} from '../../../store/index';
+import { useDispatch, useSelector} from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -25,10 +29,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Weather(props){
+  const peopleMovieResults = useSelector(state => state.movie.details);
+  const movieResults = useSelector(state => state.movieResult.details);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [data,setData] = useState([]);
   const [isSorted,setSorted] = useState(false);
   const [searchResults,setSearchResults] = useState(false);
+  const [peopleSearchResults,setPeopleSearchResults] = useState(false);
   const [method,setMethod] = useState('');
   const [open, setOpen] = React.useState(false);
   const [pageNo,setPageNo] = useState(1);
@@ -37,10 +45,19 @@ export default function Weather(props){
   const [prevMethod,setPrevMethod] = useState('');
 
   const handleChange = (event) => {
+    dispatch(peopleMovieResult.setMovieResults(''));
+    dispatch(movieResult.setMovieResults(''));
     if(event.target.value === "trending" || event.target.value === ""){
+      setPeopleSearchResults(false);
+      setSearchResults(false);
       getDetails('page=' + pageNo, props.api + "/Trending");
     }
     else if(event.target.value === "search"){
+      setSearchResults(false);
+      setPeopleSearchResults(false);
+    }
+    else if(event.target.value === "people"){
+      setPeopleSearchResults(false);
       setSearchResults(false);
     }
     setMethod(event.target.value);
@@ -55,7 +72,7 @@ export default function Weather(props){
   const [circularProgress,setCircularProgress] = useState("static");
   const getDetails = (details,method) => {
     setCircularProgress("indeterminate");
-    fetch('https://information-hub-backend.herokuapp.com/' + method,{
+    fetch('http://localhost:9000/' + method,{
       method: 'POST',
       body: details,
       headers: {
@@ -70,11 +87,19 @@ export default function Weather(props){
           setMethod('trending');
           setPrevMethod('trending');
         }
-        else{
+        else if(method === "movies/Search"){
+          setTotalPageNo(data.total_pages);
           setData(data.results);
           setMethod('');
           setSearchResults(true);
           setPrevMethod('search');
+        }
+        else{
+          setTotalPageNo(data.total_pages);
+          setData(data.results);
+          setMethod('');
+          setPeopleSearchResults(true);
+          setPrevMethod('people');
         }
         setCircularProgress("static");
     })
@@ -85,8 +110,16 @@ export default function Weather(props){
 
   let clickHandler = (event) => {
     event.preventDefault();
+    dispatch(peopleMovieResult.setMovieResults(''));
+    dispatch(movieResult.setMovieResults(''));
     var details = ['query','language','region','year'];
-    var values = [event.target.name.value,event.target.language.value,event.target.region.value,event.target.year.value];
+    var values;
+    if(event.target.year){
+      values = [event.target.name.value,event.target.language.value,event.target.region.value,event.target.year.value];
+    }
+    else{
+      values = [event.target.name.value,event.target.language.value,event.target.region.value];
+    }
     var formBody = [];
     var idx = 0;
     for (var property in details) {
@@ -96,10 +129,15 @@ export default function Weather(props){
       idx++;
     }
     formBody = formBody.join("&");
-    formBody = formBody + '&page=' + pageNo; 
     setPrevDetails(formBody);
-    setPrevMethod('search');
-    getDetails(formBody,props.api + "/Search");
+    if(event.target.year){
+      setPrevMethod('search');
+      getDetails(formBody + '&page=' + pageNo,props.api + "/Search");
+    }
+    else{
+      setPrevMethod('people');
+      getDetails(formBody + '&page=' + pageNo,props.api + "/People");
+    }
   }
 
   useEffect(function(){
@@ -112,6 +150,9 @@ export default function Weather(props){
     }
     else if(prevMethod === 'search'){
       getDetails(prevDetails + '&page=' + pageNo, props.api + "/Search");
+    }
+    else if(prevMethod === 'people'){
+      getDetails(prevDetails + '&page=' + pageNo,props.api + "/People");
     }
   },[pageNo]);
 
@@ -177,12 +218,11 @@ export default function Weather(props){
   }
 
   const pageArr = Array.from({length: totalPageNo}, (_, index) => index + 1);
-
   return (
     <div class="container-fluid h-100" >
       <div class="container" style={{textAlign:"center"}}>
           <div class="dropdown show" style={{display:"inline"}}>
-            <button class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{marginTop:"1rem"}}>
+            <button class="btn btn-outline-primary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{marginTop:"1rem"}}>
               {pageNo}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -210,11 +250,12 @@ export default function Weather(props){
               onChange={handleChange}
             >
               <MenuItem value={'trending'}>Trending</MenuItem>
-              <MenuItem value={'search'}>Search</MenuItem>
+              <MenuItem value={'search'}>Search Movies and TV shows</MenuItem>
+              <MenuItem value={'people'}>Search People</MenuItem>
             </Select>
           </FormControl>
           <div class="dropdown show" style={{display:"inline"}}>
-            <button class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{marginTop:"1rem"}}>
+            <button class="btn btn-outline-primary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{marginTop:"1rem"}}>
               <i class="fas fa-filter"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -228,19 +269,21 @@ export default function Weather(props){
             </div>
           </div>
       </div>
-      {((method === "" || method ==="trending") && !searchResults) &&
-        <div class="row align-middle">
-            {data.map((info) => (<MovieCards details={info}/>))}
-        </div>
+      {((method === "" || method ==="trending") && !searchResults) && !peopleSearchResults &&
+          <div class="row align-middle">
+              {(movieResults === '')?data.map((info) => {
+                return (<MovieCards details={info} height="28rem"/>);
+              }):<ResultsCard details={movieResults} height="60rem"/>}
+          </div>
       }
-      {(method ==="search" && !searchResults) &&
+      {(method ==="search" && !searchResults && !peopleSearchResults) &&
         <div class="container results-card">
           <div class="wrapper" >
               <div class="inner">
                 <form onSubmit={clickHandler}>
                   <h3 class="heading">Search Movies</h3>
                   <p></p>
-                  {props.details.map((info) => (info.type === "InputField"?<InputField name={info.name} description={info.description}/>:<Dropdown name={info.name} description={info.description} content={info.content}/>))}
+                  {props.details[0].map((info) => (info.type === "InputField"?<InputField name={info.name} description={info.description}/>:<Dropdown name={info.name} description={info.description} content={info.content}/>))}
                   {circularProgress==="indeterminate"? <CircularProgress class="loader" color="default" variant={circularProgress}/>:
                   <button class="form-button" type="submit" value = "submit">Submit
                     <i class="zmdi zmdi-arrow-right"></i>
@@ -250,12 +293,35 @@ export default function Weather(props){
           </div>
         </div>
       }
-      {(searchResults) &&
+      {(searchResults) && (!peopleSearchResults) &&
         <div class="row align-middle">
-            {data.map((info) => (<MovieCards details={info} />))}
+            {(movieResults === '')?data.map((info) => {
+              return (<MovieCards details={info} />);
+            }):<ResultsCard details={movieResults} height="60rem"/>}
         </div>
       }
-
+      {(method ==="people" && !searchResults && !peopleSearchResults) &&
+        <div class="container results-card">
+          <div class="wrapper" >
+              <div class="inner">
+                <form onSubmit={clickHandler}>
+                  <h3 class="heading">Search People</h3>
+                  <p></p>
+                  {props.details[1].map((info) => (info.type === "InputField"?<InputField name={info.name} description={info.description}/>:<Dropdown name={info.name} description={info.description} content={info.content}/>))}
+                  {circularProgress==="indeterminate"? <CircularProgress class="loader" color="default" variant={circularProgress}/>:
+                  <button class="form-button" type="submit" value = "submit">Submit
+                    <i class="zmdi zmdi-arrow-right"></i>
+                  </button>}
+                </form>
+             </div>
+          </div>
+        </div>
+      }
+      {(peopleSearchResults) && (!searchResults) &&
+        <div class="row align-middle">
+            { (peopleMovieResults === '')?data.map((info) => (<PeopleCards details={info} />)):(movieResults === '')?peopleMovieResults.map((info) => (<MovieCards details={info} />)):<ResultsCard details={movieResults} />}
+        </div>
+      }
    </div>
   );
 }
