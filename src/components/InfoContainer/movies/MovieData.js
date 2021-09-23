@@ -217,9 +217,30 @@ export default function Weather(props){
     setData(JSON.parse(JSON.stringify(data)));
   }
 
+  var backButtonHandler = () => {
+    if(prevMethod === 'trending' || prevMethod === ''){
+      getDetails('page=' + pageNo, props.api + "/Trending");
+      dispatch(movieResult.setMovieResults(''));
+    }
+    else if(prevMethod === 'search'){
+      getDetails(prevDetails + '&page=' + pageNo, props.api + "/Search");
+      dispatch(movieResult.setMovieResults(''));
+    }
+    else if(prevMethod === 'people'){
+      getDetails(prevDetails + '&page=' + pageNo,props.api + "/People");
+      if(movieResults !== ''){
+        dispatch(movieResult.setMovieResults(''));
+      }
+      else{
+        dispatch(peopleMovieResult.setMovieResults(''));
+      }
+    }
+  }
+
   const pageArr = Array.from({length: totalPageNo}, (_, index) => index + 1);
   return (
     <div class="container-fluid h-100" >
+      {(movieResults !=='' || peopleMovieResults !== '') && <button type="button" class="btn btn-outline-primary" onClick = {backButtonHandler} style={{marginLeft:"2rem"}}><i class="fas fa-arrow-circle-left" style={{marginRight:"0.4rem",marginTop:"0.2rem",fontSize:"1.4rem"}}></i><strong style={{fontSize:"1.1rem"}}>Back</strong></button>}
       <div class="container" style={{textAlign:"center"}}>
           <div class="dropdown show" style={{display:"inline"}}>
             <button class="btn btn-outline-primary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{marginTop:"1rem"}}>
